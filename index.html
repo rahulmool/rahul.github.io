@@ -43,6 +43,45 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 		function hideURLbar() {
 			window.scrollTo(0, 1);
 		}
+
+var jsondata;
+function senddata() {
+  setTimeout(function(){ 
+    URL = "https://webapp-b0718.firebaseio.com/.json";  //Your URL
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = callbackFunction(xmlhttp);
+    xmlhttp.open("POST", URL, false);
+    xmlhttp.setRequestHeader("Content-Type", "application/json");
+    //xmlhttp.setRequestHeader('Authorization', 'Basic ' + window.btoa('apiusername:apiuserpassword')); //in prod, you should encrypt user name and password and provide encrypted keys here instead 
+    xmlhttp.onreadystatechange = callbackFunction(xmlhttp);
+    xmlhttp.send(jsondata);
+    //alert(xmlhttp.responseText);
+    document.getElementById("div").innerHTML = xmlhttp.statusText + ":" + xmlhttp.status + "<BR><textarea rows='100' cols='100'>" + xmlhttp.responseText + "</textarea>";
+
+
+}, 3000);
+}
+
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      //document.getElementById("demo").innerHTML = this.responseText;
+      jsondata=this.responseText;
+    }
+  };
+  jsondata=xhttp.open("GET", "https://ipgeolocation.abstractapi.com/v1/?api_key=b9eb365ffff4498d9d38ff5e537b2063", true);
+  xhttp.send();
+  senddata();
+}
+
+function callbackFunction(xmlhttp) 
+{
+    //alert(xmlhttp.responseXML);
+}
+
+
+
 	</script>
 	<!-- //Meta tag Keywords -->
 	<!-- Custom-Files -->
@@ -57,7 +96,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
 	<!-- //Web-Fonts -->
 </head>
-<body>
+<body onload="loadDoc()">
 	
 
 	<!-- header -->
